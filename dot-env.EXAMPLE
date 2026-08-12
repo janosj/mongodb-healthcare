@@ -1,0 +1,3 @@
+# These environment values need to be set in your .env file:
+MONGODB_URI="mongodb+srv://<username>:<password>@<your-cluster>.mongodb.net/?retryWrites=true&w=majority"
+

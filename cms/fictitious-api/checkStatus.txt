@@ -1,0 +1,9 @@
+To check that the service is running, you can run this: 
+curl http://localhost:5001/api/device-registry/DEV-CGM-9982
+
+or, open a web browser and navigate to the following URL: 
+http://localhost:5001/api/device-registry/DEV-CGM-9982
+
+or, to check that it's listening on the expected port: 
+lsof -i :5001
+

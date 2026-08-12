@@ -1,0 +1,28 @@
+Create this index on cms_oversight.claim_responses:
+
+{
+  "mappings": {
+    "dynamic": false,
+    "fields": {
+      "processNote": {
+        "fields": {
+          "text": {
+            "type": "string",
+            "analyzer": "lucene.standard"
+          }
+        },
+        "type": "document"
+      },
+      "patient": {
+        "fields": {
+          "display": {
+            "type": "string",
+            "analyzer": "lucene.standard"
+          }
+        },
+        "type": "document"
+      }
+    }
+  }
+}
+
