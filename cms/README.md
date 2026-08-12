@@ -1,8 +1,4 @@
-Here is a clean, professional `README.md` tailored for your repository and presentation setup.
-
----
-
-# 🚀 CMS Oversight & Clinical Notes Search Demo
+# CMS Oversight & Clinical Notes Search Demo
 
 A full-stack demonstration platform showcasing modern data architecture for healthcare oversight using **MongoDB Atlas**, **Express.js**, **React**, and **OpenAI**.
 
@@ -10,7 +6,7 @@ This demo highlights how CMS (Centers for Medicare & Medicaid Services) can move
 
 ---
 
-## 📋 Overview
+## Overview
 
 Modern healthcare claims and FHIR datasets require both rigid code precision (CPT, LOINC, LCD guidelines) and deep understanding of unstructured clinical narratives written by doctors and auditors.
 
@@ -21,7 +17,7 @@ This platform consists of two unified interactive applications:
 
 ---
 
-## ✨ Demo Highlights
+## Demo Highlights
 
 * **Dynamic Schema Evolution (`$set`):** Trigger real-time FDA device verification endpoints to dynamically mutate document schemas on the fly without breaking existing readers.
 * **Lexical Keyword Search (`$search`):** Precise matching for CPT codes (e.g., `95251`), LOINC identifiers (`45536-0`), and LCD policy numbers (`L33822`) with neon-highlighted text snippets.
@@ -31,7 +27,7 @@ This platform consists of two unified interactive applications:
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 
@@ -71,7 +67,7 @@ python3 -m pip install pymongo openai
 
 ---
 
-## ⚙️ Configuration & Index Setup
+## Configuration & Index Setup
 
 ### 1. Environment Variables
 
@@ -124,7 +120,7 @@ python3 generate_embeddings.py
 
 ---
 
-## 🚀 Running the Demo
+## Running the Demo
 
 ### 1. Start the Backend Server
 
