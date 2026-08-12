@@ -11,8 +11,8 @@ fi
 source venv/bin/activate
 
 # 3. Run the seed generator
-echo "Generating 1,000 FHIR ClaimResponse documents..."
-python3 seed_claim_responses.py
+echo "Loading documents..."
+python3 load-json.py
 
 deactivate
 echo "Seeding script finished successfully!"

@@ -1,7 +1,7 @@
 # Runs the Node Express Backend
 # Set environment variables in the repo root .env file
 
-node --env-file=$(git rev-parse --show-toplevel)/.env server.js
+node --env-file=$(git rev-parse --show-toplevel)/cms/.env server.js
 
 # To check that it's running:
 # From the browser:

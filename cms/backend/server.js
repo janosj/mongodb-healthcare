@@ -3,7 +3,6 @@ const { MongoClient } = require('mongodb');
 const axios = require('axios');
 const cors = require('cors');
 const { OpenAI } = require('openai');
-require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -12,7 +11,10 @@ app.use(express.json());
 const PORT = 5050;
 
 const uri = process.env.MONGODB_URI;
-console.log(`Connecting to : ${MONOGODB_URI}`);
+const db_name = process.env.DB_NAME;
+const claims_collection = process.env.COLL_CLAIMS;
+const responses_collection = process.env.COLL_RESPONSES;
+console.log(`Connecting to : ${uri}`);
 const client = new MongoClient(uri);
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -22,9 +24,9 @@ let claimResponsesCollection;
 
 async function connectDB() {
   await client.connect();
-  const db = client.db('cms_oversight');
-  claimsCollection = db.collection('federal_claims');
-  claimResponsesCollection = db.collection('claim_responses');
+  const db = client.db(db_name);
+  claimsCollection = db.collection(claims_collection);
+  claimResponsesCollection = db.collection(responses_collection);
   console.log("Connected to MongoDB Atlas!");
 }
 connectDB().catch(console.error);

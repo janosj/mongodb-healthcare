@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
-
 // Handles code syntax highlighting and search term highlighting
 // in the right-hand inspection window
 function highlightJSON(json, searchTerm = '') {
