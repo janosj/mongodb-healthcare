@@ -7,6 +7,6 @@ python3 -m venv venv
 source venv/bin/activate
 pip3 install --quiet pymongo python-dotenv
 
-echo "Setup complete! Run './2-run.sh' to seed the database."
+echo "Setup complete! Run './2-load.sh' to seed the database."
 deactivate
 

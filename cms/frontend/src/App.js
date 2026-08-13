@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
+const validationRule = `{ 
+  $jsonSchema: {
+    bsonType: "object",
+    properties: {
+      device_verification: {
+        bsonType: "object",
+        properties: {
+          api_version: {
+            enum: ["1.0"],
+            description: "API version must strictly be 1.0"
+          }
+        }
+      }
+    }
+  }
+}`;
+
+
 // Formats raw JSON string into syntax-highlighted HTML spans
 function highlightJSON(json) {
   if (typeof json !== 'string') {
@@ -33,8 +51,9 @@ function App() {
   const [claims, setClaims] = useState([]);
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [validationError, setValidationError] = useState(null);
 
-const fetchClaims = async () => {
+  const fetchClaims = async () => {
     try {
       const res = await fetch('http://127.0.0.1:5050/api/claims');
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -70,13 +89,30 @@ const fetchClaims = async () => {
         body: JSON.stringify({ deviceId: 'DEV-CGM-9982' })
       });
       const result = await res.json();
+
+      // Catch 400 Bad Request or result.success === false
+      if (!res.ok || !result.success) {
+        setValidationError({
+          title: result.message || 'Document Failed Validation',
+          raw: result.rawError || result.error || 'Unknown Mongo Error'
+        });
+        return;
+      }
+
+      // Success path: update local state with the modified claim document
+      setClaims((prevClaims) =>
+        prevClaims.map((c) => (c._id === claimId ? result.document : c))
+      );
+
       if (result.document) {
         setSelectedDoc(result.document);
         fetchClaims();
       }
+
     } catch (err) {
       console.error("API verification failed:", err);
     }
+
   };
 
   return (
@@ -84,10 +120,10 @@ const fetchClaims = async () => {
       {/* Header */}
       <header style={styles.header}>
         <div>
-          <div style={styles.badge}>OPERATIONAL DATA LAYER DEMO</div>
+          {/* <div style={styles.badge}>OPERATIONAL DATA LAYER DEMO</div> */}
           <h1 style={styles.title}>CMS Federal Oversight Platform</h1>
           <p style={styles.subtitle}>
-            Zero-ETL Dynamic Schema Evolution & Upstream API Integration
+            An Operational Data Layer Demo featuring Zero-ETL Dynamic Schema Evolution & Seamless API Integration
           </p>
         </div>
       </header>
@@ -99,15 +135,79 @@ const fetchClaims = async () => {
         </div>
       )}
 
+
+      {/* Schema Validation Error Pop-up Modal */}
+      {validationError && (
+        <div style={styles.modalOverlay}>
+          <div style={{ ...styles.modalContent, maxWidth: '650px' }}>
+            <div style={styles.modalHeader}>
+              <span style={styles.modalIcon}>🚫</span>
+              <h3 style={styles.modalTitle}>MongoServerError</h3>
+            </div>
+      
+            <p style={styles.modalText}>
+              <strong>Message:</strong> {validationError.title}
+            </p>
+
+            {/* Raw Unsanitized MongoDB Driver Output */}
+            <pre style={{
+              backgroundColor: '#0f172a',
+              border: '1px solid #ef4444',
+              padding: '12px',
+              borderRadius: '6px',
+              fontSize: '11px',
+              color: '#f87171',
+              overflowX: 'auto',
+              maxHeight: '220px',
+              fontFamily: 'monospace'
+            }}>
+              <code>{typeof validationError.raw === 'string' ? validationError.raw : JSON.stringify(validationError.raw, null, 2)}</code>
+            </pre>
+
+            <button 
+              style={styles.closeBtn} 
+              onClick={() => setValidationError(null)}
+            >
+              Close Window
+            </button>
+          </div>
+        </div>
+      )}
+
+
       {/* Main Grid */}
       <main style={styles.grid}>
         
         {/* LEFT COLUMN: Claims Selector + ODL Ingestion Pipeline Code Box */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          
+
+         
+          {/* Service Integration Code Snippet Panel */}
+          <section style={styles.codeSnippetPanel}>
+            <div style={styles.codeSnippetHeader}>
+              <span style={styles.codeSnippetTitle}>⚡ Integrate Evolving Data Services</span>
+            </div>
+            <div style={styles.codeSnippetHeader}>
+              <span style={styles.zeroEtlTag}>ZERO ETL</span>&nbsp;
+              <span style={styles.zeroEtlTag}>ZERO CODE CHANGES</span>
+            </div>
+            <pre style={styles.codeSnippetBlock}>
+              <code>
+                <span style={{ color: '#9ca3af' }}>// 1. Capture payload</span>{'\n'}
+                const <span style={{ color: '#38bdf8' }}>deviceData</span> = <span style={{ color: '#10B981' }}>apiResponse.data;</span>{'\n\n'}
+                <span style={{ color: '#9ca3af' }}>// 2. Incorporate data exactly as received</span>{'\n'}
+                await claimsCollection.<span style={{ color: '#fbbf24' }}>updateOne</span>({'\n'}
+                {'  '}&#123; <span style={{ color: '#38bdf8' }}>_id</span>: claimId &#125;,{'\n'}
+                {'  '}&#123; <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>$set</span>: &#123; <span style={{ color: '#38bdf8' }}>device_verification</span>: <span style={{ color: '#38bdf8' }}>deviceData</span> &#125; &#125;{'\n'}
+                );
+              </code>
+            </pre>
+          </section>
+
+ 
           {/* Claims Selection List */}
           <section style={styles.panel}>
-            <h2 style={styles.panelTitle}>Select State Claim</h2>
+            <h2 style={styles.panelTitle}>Select a Claim</h2>
             {claims.length === 0 && !errorMsg && (
               <p style={styles.loadingText}>Loading claims from Atlas...</p>
             )}
@@ -133,7 +233,7 @@ const fetchClaims = async () => {
                       {/* Restored Verified Badge */}
                       {claim.device_verification ? (
                         <span style={styles.verifiedBadge}>
-                          ⚡ Verified
+                          ⚡ FDA Verified
                         </span>
                       ) : (
                         <span style={styles.unverifiedBadge}>
@@ -164,25 +264,25 @@ const fetchClaims = async () => {
                 );
               })}
             </div>
-          </section>
 
-          {/* ODL Ingestion Pipeline Code Box */}
-          <section style={styles.codeSnippetPanel}>
-            <div style={styles.codeSnippetHeader}>
-              <span style={styles.codeSnippetTitle}>⚡ ODL Ingestion Pipeline</span>
-              <span style={styles.zeroEtlTag}>ZERO-ETL</span>
+            {/* Schema Validation Link */}
+            <div style={styles.copyBanner}>
+              <span style={{ color: '#9ca3af', fontSize: '13px' }}>
+                Looking for schema validation? Try this:
+              </span>{' '}
+              <a
+                href="#copy"
+                style={styles.copyLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigator.clipboard.writeText(validationRule);
+                  alert('📋 MongoDB Schema Validation rule copied to clipboard!');
+                }}
+              >
+                clipboard
+              </a>
             </div>
-            <pre style={styles.codeSnippetBlock}>
-              <code>
-                <span style={{ color: '#9ca3af' }}>// 1. Capture payload</span>{'\n'}
-                <span style={{ color: '#f43f5e' }}>const</span> <span style={{ color: '#38bdf8' }}>deviceData</span> = apiResponse.data;{'\n\n'}
-                <span style={{ color: '#9ca3af' }}>// 2. Atlas Dynamic Evolution</span>{'\n'}
-                <span style={{ color: '#f43f5e' }}>await</span> claimsCollection.<span style={{ color: '#fbbf24' }}>updateOne</span>({'\n'}
-                {'  '}&#123; <span style={{ color: '#38bdf8' }}>_id</span>: claimId &#125;,{'\n'}
-                {'  '}&#123; <span style={{ color: '#10B981', fontWeight: 'bold' }}>$set</span>: &#123; <span style={{ color: '#38bdf8' }}>device_verification</span>: deviceData &#125; &#125;{'\n'}
-                );
-              </code>
-            </pre>
+
           </section>
 
         </div>
@@ -190,12 +290,12 @@ const fetchClaims = async () => {
         {/* RIGHT COLUMN: Atlas Document Inspection Window */}
         <section style={styles.panel}>
           <div style={styles.inspectorHeader}>
-            <h2 style={styles.panelTitle}>Atlas Document Inspection</h2>
+            <h2 style={styles.panelTitle}>Document Inspector</h2>
             {selectedDoc && (
               <span style={styles.docBadge}>
                 {selectedDoc.device_verification
-                  ? `Schema Mode: Enriched (V${selectedDoc.device_verification.api_version})`
-                  : 'Schema Mode: Base'}
+                  ? `Schema: Enriched (V${selectedDoc.device_verification.api_version})`
+                  : 'Schema: Base'}
               </span>
             )}
           </div>
@@ -288,13 +388,13 @@ const styles = {
   codeSnippetPanel: {
     backgroundColor: '#0f172a',
     borderRadius: '12px',
-    border: '1px solid #1e293b',
+    border: '2px solid #fbbf24',
     padding: '16px 20px',
     boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
   },
   codeSnippetHeader: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: '10px',
   },
@@ -407,7 +507,6 @@ const styles = {
   docBadge: {
     fontSize: '12px',
     fontFamily: 'monospace',
-    color: '#9ca3af',
     backgroundColor: '#1f2937',
     padding: '4px 10px',
     borderRadius: '6px',
@@ -432,6 +531,86 @@ const styles = {
   loadingText: {
     color: '#6b7280',
     fontSize: '14px',
+  },
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+    backdropFilter: 'blur(4px)',
+  },
+  modalContent: {
+    backgroundColor: '#1f2937',
+    border: '2px solid #ef4444',
+    borderRadius: '12px',
+    padding: '24px',
+    maxWidth: '480px',
+    width: '90%',
+    boxShadow: '0 20px 25px -5px rgba(239, 68, 68, 0.25)',
+    color: '#f9fafb',
+  },
+  modalHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '12px',
+  },
+  modalIcon: {
+    fontSize: '24px',
+  },
+  modalTitle: {
+    margin: 0,
+    color: '#f87171',
+    fontSize: '18px',
+    fontWeight: '700',
+  },
+  modalText: {
+    fontSize: '14px',
+    color: '#d1d5db',
+    lineHeight: '1.5',
+    marginBottom: '16px',
+  },
+  codeSnippet: {
+    backgroundColor: '#0f172a',
+    border: '1px solid #334155',
+    padding: '10px 12px',
+    borderRadius: '6px',
+    fontSize: '12px',
+    color: '#fde047',
+    marginBottom: '20px',
+    fontFamily: 'monospace',
+  },
+  closeBtn: {
+    width: '100%',
+    backgroundColor: '#ef4444',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '6px',
+    padding: '10px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
+  },
+  copyBanner: {
+    marginTop: '16px',
+    fontSize: '13px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center', // <-- Centers the text and link horizontally!
+    gap: '6px',
+  },
+  copyLink: {
+    color: '#38bdf8',
+    textDecoration: 'underline',
+    fontWeight: '500',
+    cursor: 'pointer',
+    transition: 'color 0.2s',
   },
 };
 

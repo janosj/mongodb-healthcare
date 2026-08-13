@@ -37,7 +37,8 @@ app.get('/api/claims', async (req, res) => {
   res.json(claims);
 });
 
-// Endpoint 2: Dynamic FDA Verification ($set)
+
+// Endpoint 2: Dynamic FDA Verification ($set) with JSON Schema Validation Handler
 app.post('/api/claims/:id/verify-device', async (req, res) => {
   const claimId = req.params.id;
   const deviceId = req.body.deviceId || 'DEV-CGM-9982';
@@ -54,7 +55,25 @@ app.post('/api/claims/:id/verify-device', async (req, res) => {
     const updatedDoc = await claimsCollection.findOne({ _id: claimId });
     res.json({ success: true, document: updatedDoc });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Verification error:", error.message);
+
+    // Detect MongoDB Schema Validation failure (Code 121)
+    if (error.code === 121 || (error.message && error.message.includes('Document failed validation'))) {
+
+      // Extract MongoDB's raw errInfo or fallback to raw error message
+      const rawMongoDetails = error.errInfo 
+        ? JSON.stringify(error.errInfo.details, null, 2)
+        : error.message;
+
+      return res.status(400).json({
+        success: false,
+        errorType: 'SCHEMA_VALIDATION_ERROR',
+        message: error.message,       // e.g. "Document failed validation"
+        rawError: rawMongoDetails     // The full un-sanitized MongoDB driver output
+      });
+    }
+
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
