@@ -79,7 +79,11 @@ OPENAI_API_KEY="sk-proj-..."
 
 ```
 
-### 2. Generate Vector Embeddings
+### 2. Load Sample Data & Generate Vector Embeddings
+
+This demo uses two collections: `federal_claims` and `claim_responses`. Loading the first collection (`federal_claims`) is part of the demonstration. Two records can be found in `/data/prior-auths`. For the demo, load these records individually using MongoDB Compass, noting the simplicity of loading JSON and the differences between the two records (the CA record using the `extension` field whereas the GA record does not). That directory also contains a Python data loader - useful during testing, and also to show that working programmatically is equally simple. 
+
+The second collection (`claim_responses`) should be loaded in advance, and vector embeddings should be generated. A working data set can found in `data\claim-responses`. That folder also includes scripts to generate new records and add the vector embeddings. 
 
 Run the embedding script to vectorize all process notes in your `claim_responses` collection:
 
