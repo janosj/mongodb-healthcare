@@ -129,26 +129,36 @@ python3 generate_embeddings.py
 ### 1. Start the Backend Server
 
 ```bash
+cd cms/backend
+./install.sh
+
 # Runs Express backend on http://localhost:5050
-npm run server
-
+./runBackend.sh
 ```
-
-*(Or `node server.js` / `nodemon server.js`)*
 
 ### 2. Start the React Frontend
 
 In a separate terminal window:
 
 ```bash
-cd frontend
-npm start
-
+cd cms/frontend
+./install.sh
+./runFrontend.sh
 ```
 
-### 3. Launch UI Windows for Live Presentation
+### 3. Launch Version 1 of the fictitious external API
 
-Open your browser to present both capabilities side-by-side:
+In a separate terminal window:
+
+```bash
+cd cms/fictitious-api
+./1-dependencies.sh
+./runV1api.sh
+```
+
+### 4. Launch UI Windows for Live Presentation
+
+Launching the frontend will automatically open your browser to present both capabilities side-by-side:
 
 * **Window A (Left Screen - ODL Demo):** `http://localhost:3000/odl`
 * Click **"Verify Device (FDA API)"** to trigger schema mutation (`$set`) live on screen.
@@ -156,4 +166,12 @@ Open your browser to present both capabilities side-by-side:
 
 * **Window B (Right Screen - Vector Search Demo):** `http://localhost:3000/search`
 * Toggle between **Lexical** and **Vector** search modes to demonstrate exact code matching versus semantic intent understanding.
+
+
+---
+
+## Demo Walkthrough
+
+### Load the prior authorization records. 
+
 
