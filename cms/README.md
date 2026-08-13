@@ -71,6 +71,8 @@ python3 -m pip install pymongo openai
 
 ### 1. Environment Variables
 
+Launch a demo cluster in MongoDB Atlas. 
+
 Create a `.env` file in the root directory (or export them in your terminal):
 
 ```bash
@@ -172,6 +174,24 @@ Launching the frontend will automatically open your browser to present both capa
 
 ## Demo Walkthrough
 
+### 1. MongoDB Atlas (or Atlas for Government)
+
+Although you will already have a preconfigured demo cluster running, walk through the Atlas Launch Cluster page, reviewing any salient points with your audience. 
+
 ### Load the prior authorization records. 
+
+Using MongoDB Compass, connect to your database and load the two prior authorization records. If this is your first time running through the demo, you will have to create a new database (cms_oversight) and collection (federal_claims). Then, cick the `Import data` button and navigate to your Georgia (GA) claim record. Load the second (CA) record, noting the differences and the ability to handle non-uniform data. Walk through the data loader code, if you want to show things from the programmatic point of view. 
+
+### Incorporate Data from Evolving External Services
+
+Switch to the front-end application (`CMS Federal Oversight Platform`). The two records you just loaded should be listed in the lower-left panel (`Select a Claim`). Click the **panel** of either one (not the Verify button) to select it, displaying the full JSON document in the right-side Document Inspector. The top-right of the Document Inspector displays the schema version - this will say **Base until you call the (fictitious) external FDA service. The top-right of the selector will also display a status (**Unverified**).
+
+Click the `Verify Device` button for the selected record. The response will be appended to the JSON document (you may have to scroll down to see it). The status labels will be updated to say **FDA Verified** and **Enriched (V1.0)**.
+
+Walk through The actual code that does the update (displayed in the top-left corner). Note how you can easily incorporate this data into your data model, exactly as received. The data provenance is embedded in the document: what external service was called, what version, what date, and the exact response. 
+
+Now, simulate a service upgrade. From the terminal window where the V1 service is running, shut it down and launch Version 2 (`runV2api.sh`). Click `re-Verify`. The updated data model is incorporated immediately, without requiring any back-end database schema modifications.
+
+What if the customer **doesn't** want these kind of changes coming into their system unannounced? Clearly, they'd still want to test, and they may want to make application-level code changes to work with the new data format. They can prevent new versions hitting their system unexpectedly by using *Schema Validation*. The validation schema is hard to remember, so just click on the **clipboard** link in the lower-left corner. Then, navigate back to Compass. With the **federal_claims** collection still selected, navigate to the **Validation** tab and click `Add rule`. Highlight the existing sample rule and replace it by pasting the actual rule from your clipboard. This rule states the the API version must be 1.0. Click `Apply` to apply the new rule. Back in the front-end application, select the second record and click the `Verify` button. You should now receive an error that the update failed, because the API version no longer satisfies the business requirement. 
 
 
