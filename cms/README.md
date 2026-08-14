@@ -130,5 +130,5 @@ What if the customer *doesn't* want these kind of changes coming into their syst
 
 ### 4. Pivot to Data Retrieval via Search and Vector Search
 
-Using the second web app (*Clinical Notes Inspector*), we will focus on information retrieval. If you created an index in advance, you can quickly search the collection by typing in a search term or clicking one of the available examples. Alternatively, you can walk through the index creation in Atlas using the Search index definition available in `data/claim-responses/index-defs`.
+Use the second web app (*Clinical Notes Inspector*) to explore the various approaches to information retrieval. The application supports both lexical (keyword) and semantic (vector) search. If you created the indexes in advance, you can quickly search the collection by typing in some search terms or clicking one of the available examples. Alternatively, you can walk through the index creation in Atlas using the Search and Vector Search index definitions available in `data/claim-responses/index-defs`.
 
