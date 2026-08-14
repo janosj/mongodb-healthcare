@@ -128,7 +128,7 @@ Now, simulate a service upgrade. From the terminal window where the V1 service i
 
 What if the customer *doesn't* want these kind of changes coming into their system unannounced? Clearly, they'd still want to test, and they may want to make application-level code changes to work with the new data format. They can prevent new versions hitting their system unexpectedly by using **Schema Validation**. The syntax is hard to get right, so just click on the `clipboard` link in the lower-left corner. Then, navigate back to MongoDB Compass. With the *federal_claims* collection still selected, navigate to the *Validation* tab and click `Add rule`. Highlight the existing sample rule and replace it by pasting the actual rule from your clipboard. This rule states the the API version must be 1.0. Click `Apply` to apply the new rule. Back in the front-end application, select the second record and click the `Verify` button. You should now receive an error that the update failed, because the API version no longer satisfies the business requirement. 
 
-### 4. Pivot to Data Retrieval via Search and Vector Search
+### 4. Pivot to Data Retrieval, using Atlas Search and Vector Search
 
 Use the second web app (*Clinical Notes Inspector*) to explore the various approaches to information retrieval. The application supports both lexical (keyword) and semantic (vector) search. If you created the indexes in advance, you can quickly search the collection by typing in some search terms or clicking one of the available examples. Alternatively, you can walk through the index creation in Atlas using the Search and Vector Search index definitions available in `data/claim-responses/index-defs`.
 
