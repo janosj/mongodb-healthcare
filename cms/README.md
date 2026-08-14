@@ -110,11 +110,11 @@ cd cms/fictitious-api
 
 Although you will already have a preconfigured demo cluster running, walk through the Atlas Launch Cluster page, reviewing any salient points with your audience. 
 
-### Load the prior authorization records. 
+### 2. Load the prior authorization records. 
 
 Using MongoDB Compass, connect to your database and load the two prior authorization records. If this is your first time running through the demo, you will have to create a new database (cms_oversight) and collection (federal_claims). Then, cick the `Import data` button and navigate to your Georgia (GA) claim record. Load the second (CA) record, noting the differences and the ability to handle non-uniform data. Walk through the data loader code, if you want to show things from the programmatic point of view. 
 
-### Incorporate Data from Evolving External Services
+### 3. Incorporate Data from Evolving External Services
 
 Switch to the front-end application (*CMS Federal Oversight Platform*). The two records you just loaded should be listed in the lower-left panel (*Select a Claim*). Click the **panel** of either one (not the Verify button) to select it, displaying the full JSON document in the right-side Document Inspector. The top-right of the Document Inspector displays the schema version - this will say *Base* until you call the (fictitious) external FDA service. The top-right of the selector will also display a status (*Unverified*).
 
