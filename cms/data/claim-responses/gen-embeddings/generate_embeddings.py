@@ -39,10 +39,10 @@ def embed_claim_responses():
     total = len(docs)
     
     if total == 0:
-        print("✅ All documents already have embeddings generated!")
+        print("All documents already have embeddings generated!")
         return
 
-    print(f"⚡ Generating embeddings for {total} documents using OpenAI 'text-embedding-3-small'...")
+    print(f"Generating embeddings for {total} documents using OpenAI 'text-embedding-3-small'...")
     
     batch_size = 50
     for i in range(0, total, batch_size):
@@ -68,7 +68,7 @@ def embed_claim_responses():
         
         print(f"Processed {min(i + batch_size, total)} / {total} documents...")
 
-    print("🎉 Successfully generated and saved all embeddings in Atlas!")
+    print("Successfully generated and saved all embeddings in Atlas!")
 
 if __name__ == "__main__":
     embed_claim_responses()
