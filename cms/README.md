@@ -124,7 +124,7 @@ cd cms/frontend
 ./runFrontend.sh
 ```
 
-### 3. Launch Version 1 of the fictitious external API
+### 3. Launch Version 1 of the (fictitious) External API
 
 In a separate terminal window:
 
@@ -134,16 +134,13 @@ cd cms/fictitious-api
 ./runV1api.sh
 ```
 
-### 4. Launch UI Windows for Live Presentation
+### 4. Launch Web Applications
 
-Launching the frontend will automatically open your browser to present both capabilities side-by-side:
+Launching the frontend will automatically display the two demo applications in your web browser (using two separate tabs):
 
-* **Window A (Left Screen - ODL Demo):** `http://localhost:3000/odl`
-* Click **"Verify Device (FDA API)"** to trigger schema mutation (`$set`) live on screen.
+* **Tab 1** will have the ODL portion of the demo, hosted at `http://localhost:3000/odl`.
 
-
-* **Window B (Right Screen - Vector Search Demo):** `http://localhost:3000/search`
-* Toggle between **Lexical** and **Vector** search modes to demonstrate exact code matching versus semantic intent understanding.
+* **Tab 2** with have the Clinical Notes Inspector for demonstrating Search and Vector Search, hosted at `http://localhost:3000/search`
 
 
 ---
