@@ -124,6 +124,8 @@ Walk through The actual code that does the update (displayed in the top-left cor
 
 Now, simulate a service upgrade. From the terminal window where the V1 service is running, shut it down and launch Version 2 (`runV2api.sh`). Click `re-Verify`. The updated data model is incorporated immediately, without requiring any back-end database schema modifications.
 
+#### Schema Governance
+
 What if the customer *doesn't* want these kind of changes coming into their system unannounced? Clearly, they'd still want to test, and they may want to make application-level code changes to work with the new data format. They can prevent new versions hitting their system unexpectedly by using **Schema Validation**. The syntax is hard to get right, so just click on the `clipboard` link in the lower-left corner. Then, navigate back to MongoDB Compass. With the *federal_claims* collection still selected, navigate to the *Validation* tab and click `Add rule`. Highlight the existing sample rule and replace it by pasting the actual rule from your clipboard. This rule states the the API version must be 1.0. Click `Apply` to apply the new rule. Back in the front-end application, select the second record and click the `Verify` button. You should now receive an error that the update failed, because the API version no longer satisfies the business requirement. 
 
 
