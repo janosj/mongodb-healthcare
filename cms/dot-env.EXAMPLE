@@ -1,3 +1,12 @@
-# These environment values need to be set in your .env file:
+# Modify these values to match your environment
+# Copy the file to 'cms/.env'
+
 MONGODB_URI="mongodb+srv://<username>:<password>@<your-cluster>.mongodb.net/?retryWrites=true&w=majority"
+
+OPENAI_API_KEY="<your-OpenAI-API-key>"
+
+# Do not delete. 
+DB_NAME=cms_oversight
+COLL_CLAIMS=federal_claims
+COLL_RESPONSES=claim_responses
 

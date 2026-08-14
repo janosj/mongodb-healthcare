@@ -27,59 +27,20 @@ This platform consists of two unified interactive applications:
 
 ---
 
-## Installation
-
-### Prerequisites
+## Prerequisites
 
 * **Node.js** (v18+)
 * **Python** (v3.9+)
 * **MongoDB Atlas** cluster (`cms_oversight` database)
 * **OpenAI API Key**
 
-### 1. Clone & Install Node Dependencies
 
-```bash
-# Clone repository
-git clone <your-repo-url>
-cd <repo-folder>
-
-# Install backend dependencies
-npm install
-
-# Install frontend dependencies
-cd frontend
-npm install
-cd ..
-
-```
-
-### 2. Set Up Python Virtual Environment (for Embeddings)
-
-```bash
-# Create and activate virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install required Python packages
-python3 -m pip install pymongo openai
-
-```
-
----
-
-## Configuration & Index Setup
+## Configuration & Setup
 
 ### 1. Environment Variables
 
-Launch a demo cluster in MongoDB Atlas. 
+Copy the file `cms\dot-env.EXAMPLE` to `cms\.env` and modify the values to match your environment. Specify your Atlas connect string and your OpenAI API Key.
 
-Create a `.env` file in the root directory (or export them in your terminal):
-
-```bash
-MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority"
-OPENAI_API_KEY="sk-proj-..."
-
-```
 
 ### 2. Load Sample Data & Generate Vector Embeddings
 
