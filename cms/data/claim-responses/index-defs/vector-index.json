@@ -1,4 +1,8 @@
-Call this 'vector_index':
+Create the following Atlas Vector Search index on cms_oversight.claim_responses.
+Use the JSON Editor in Atlas.
+The index name should be "vector_index".
+
+----
 
 {
   "fields": [

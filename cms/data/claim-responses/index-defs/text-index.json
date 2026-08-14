@@ -1,4 +1,9 @@
-Create this index on cms_oversight.claim_responses:
+Create the following Atlas Search index on cms_oversight.claim_responses.
+Use the JSON Editor in Atlas.
+The index name should be "default".
+
+----
+
 
 {
   "mappings": {

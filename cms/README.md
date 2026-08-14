@@ -95,33 +95,9 @@ python3 generate_embeddings.py
 
 ```
 
-### 3. Create Search Indexes in MongoDB Atlas UI
+### 3. Create Search & Vector Search Indexes
 
-* **Lexical Index (`default`):**
-* Database: `cms_oversight` | Collection: `claim_responses`
-* Index Type: **Atlas Search** (Default JSON configuration with dynamic mapping).
-
-
-* **Vector Index (`vector_index`):**
-* Database: `cms_oversight` | Collection: `claim_responses`
-* Index Type: **Atlas Vector Search**
-* Definition:
-```json
-{
-  "fields": [
-    {
-      "type": "vector",
-      "path": "embedding",
-      "numDimensions": 1536,
-      "similarity": "cosine"
-    }
-  ]
-}
-
-```
-
-
-
+The *Clinical Notes Inspector* application will be used to demonstrate Search & Vector Search. These two indexes can be created in advance, or as part of the demo (but it will take a few minutes). Index definitions are in the repo (`data/claim-responses/index-defs`).
 
 
 ---
