@@ -124,6 +124,13 @@ cd cms/frontend
 ./runFrontend.sh
 ```
 
+Launching the frontend will automatically display the two demo applications in your web browser (using two separate tabs):
+
+* **Tab 1** will have the ODL portion of the demo, hosted at `http://localhost:3000/odl`.
+
+* **Tab 2** with have the Clinical Notes Inspector for demonstrating Search and Vector Search, hosted at `http://localhost:3000/search`
+
+
 ### 3. Launch Version 1 of the (fictitious) External API
 
 In a separate terminal window:
@@ -133,15 +140,6 @@ cd cms/fictitious-api
 ./1-dependencies.sh
 ./runV1api.sh
 ```
-
-### 4. Launch Web Applications
-
-Launching the frontend will automatically display the two demo applications in your web browser (using two separate tabs):
-
-* **Tab 1** will have the ODL portion of the demo, hosted at `http://localhost:3000/odl`.
-
-* **Tab 2** with have the Clinical Notes Inspector for demonstrating Search and Vector Search, hosted at `http://localhost:3000/search`
-
 
 ---
 
